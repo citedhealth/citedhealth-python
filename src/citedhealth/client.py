@@ -6,7 +6,7 @@ from typing import Any
 
 import httpx
 
-from citedhealth.exceptions import NotFoundError, RateLimitError
+from citedhealth.exceptions import CitedHealthError, NotFoundError, RateLimitError
 from citedhealth.models import (
     EvidenceLink,
     Ingredient,
@@ -40,7 +40,10 @@ class CitedHealth:
             raise RateLimitError(retry_after=retry)
         if resp.status_code == 404:
             raise NotFoundError("resource", path)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            raise CitedHealthError(f"HTTP {resp.status_code}: {path}") from exc
         return resp.json()
 
     def search_ingredients(self, query: str = "", category: str = "") -> list[Ingredient]:
@@ -114,7 +117,10 @@ class AsyncCitedHealth:
 
     async def _request(self, path: str, params: dict[str, str] | None = None) -> Any:
         if self._http is None:
-            self._http = httpx.AsyncClient(timeout=self._timeout)
+            msg = (
+                "AsyncCitedHealth must be used as an async context manager: `async with AsyncCitedHealth() as client:`"
+            )
+            raise RuntimeError(msg)
 
         resp = await self._http.get(f"{self._base_url}{path}", params=params)
 
@@ -123,7 +129,10 @@ class AsyncCitedHealth:
             raise RateLimitError(retry_after=retry)
         if resp.status_code == 404:
             raise NotFoundError("resource", path)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            raise CitedHealthError(f"HTTP {resp.status_code}: {path}") from exc
         return resp.json()
 
     async def search_ingredients(self, query: str = "", category: str = "") -> list[Ingredient]:

@@ -5,10 +5,11 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
 import pytest
 
 from citedhealth import CitedHealth
-from citedhealth.exceptions import NotFoundError, RateLimitError
+from citedhealth.exceptions import CitedHealthError, NotFoundError, RateLimitError
 from citedhealth.models import EvidenceLink, Ingredient, Paper
 
 
@@ -19,7 +20,11 @@ def _mock_response(status_code: int = 200, json_data: Any = None, headers: dict[
     resp.headers = headers or {}
     resp.raise_for_status = MagicMock()
     if status_code >= 400:
-        resp.raise_for_status.side_effect = Exception(f"HTTP {status_code}")
+        request = httpx.Request("GET", "https://citedhealth.com/api/test/")
+        response = httpx.Response(status_code, request=request)
+        resp.raise_for_status.side_effect = httpx.HTTPStatusError(
+            f"HTTP {status_code}", request=request, response=response
+        )
     return resp
 
 
@@ -217,8 +222,8 @@ class TestCustomBaseUrl:
 
 
 class TestAsyncClient:
-    @patch("citedhealth.client.httpx.AsyncClient")
     @pytest.mark.anyio
+    @patch("citedhealth.client.httpx.AsyncClient")
     async def test_search_ingredients(self, mock_client_cls: MagicMock) -> None:
         from citedhealth import AsyncCitedHealth
 
@@ -241,8 +246,8 @@ class TestAsyncClient:
         assert len(results) == 1
         assert isinstance(results[0], Ingredient)
 
-    @patch("citedhealth.client.httpx.AsyncClient")
     @pytest.mark.anyio
+    @patch("citedhealth.client.httpx.AsyncClient")
     async def test_get_evidence(self, mock_client_cls: MagicMock) -> None:
         from citedhealth import AsyncCitedHealth
 
@@ -276,6 +281,27 @@ class TestAsyncClient:
 
         assert isinstance(ev, EvidenceLink)
         assert ev.grade == "B"
+
+
+class TestServerError:
+    @patch("citedhealth.client.httpx.Client")
+    def test_500_raises_cited_health_error(self, mock_client_cls: MagicMock) -> None:
+        mock_client = mock_client_cls.return_value.__enter__.return_value
+        mock_client.get.return_value = _mock_response(status_code=500)
+
+        client = CitedHealth()
+        with pytest.raises(CitedHealthError, match="HTTP 500"):
+            client.search_ingredients("test")
+
+
+class TestAsyncContextManagerRequired:
+    @pytest.mark.anyio
+    async def test_raises_without_context_manager(self) -> None:
+        from citedhealth import AsyncCitedHealth
+
+        client = AsyncCitedHealth()
+        with pytest.raises(RuntimeError, match="must be used as an async context manager"):
+            await client.search_ingredients("test")
 
 
 class TestGetEvidenceById:

@@ -50,6 +50,7 @@ strict = true
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "pytest-anyio>=0.0.0",
     "ruff>=0.8",
     "mypy>=1.14",
     "anyio[trio]>=4.0",

@@ -7,7 +7,7 @@ for parsing JSON response dicts from the REST API.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, TypeVar
+from typing import Any, Generic, TypeVar
 
 T = TypeVar("T")
 
@@ -122,16 +122,16 @@ class EvidenceLink:
 
 
 @dataclass(frozen=True)
-class PaginatedResponse:
+class PaginatedResponse(Generic[T]):
     """Paginated API response wrapper."""
 
     count: int
     next: str | None
     previous: str | None
-    results: list[Any]
+    results: list[T]
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any], model_cls: type[T]) -> PaginatedResponse:
+    def from_dict(cls, data: dict[str, Any], model_cls: type[T]) -> PaginatedResponse[T]:
         return cls(
             count=data.get("count", 0),
             next=data.get("next"),
