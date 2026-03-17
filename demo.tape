@@ -1,19 +1,23 @@
-# demo.tape — VHS tape for citedhealth demo GIF
+# demo.tape — VHS tape for citedhealth CLI demo GIF
 # Generate with: vhs demo.tape
 
 Output demo.gif
 
-Set FontSize 14
-Set Width 800
-Set Height 400
+Set FontSize 20
+Set Width 1000
+Set Height 580
 Set Theme "Catppuccin Mocha"
+Set TypingSpeed 30ms
+Set Padding 24
 
-Type `python3 -c "
-from citedhealth import CitedHealth
-client = CitedHealth()
-evidence = client.get_evidence('biotin', 'hair-loss')
-print(f'Grade: {evidence.grade} — {evidence.grade_label}')
-print(f'Studies: {evidence.total_studies}, Participants: {evidence.total_participants}')
-"`
+Type "citedhealth ingredients biotin"
 Enter
-Sleep 2s
+Sleep 3s
+
+Type "citedhealth evidence biotin hair-loss"
+Enter
+Sleep 3s
+
+Type "citedhealth papers --year 2024"
+Enter
+Sleep 3s

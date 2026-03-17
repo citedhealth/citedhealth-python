@@ -8,10 +8,15 @@ Python client for the [CITED Health](https://citedhealth.com) evidence-based sup
 
 > **Try it live at [citedhealth.com](https://citedhealth.com)** — evidence grades for supplements like Biotin, Melatonin, and Ashwagandha.
 
+<p align="center">
+  <img src="demo.gif" alt="citedhealth CLI demo — search supplement ingredients, evidence grades, and PubMed papers" width="800">
+</p>
+
 ## Table of Contents
 
 - [Install](#install)
 - [Quick Start](#quick-start)
+- [Command-Line Interface](#command-line-interface)
 - [What You Can Do](#what-you-can-do)
 - [Evidence Grades](#evidence-grades)
 - [API Reference](#api-reference)
@@ -44,6 +49,50 @@ print(f"Grade: {evidence.grade} — {evidence.grade_label}")
 # Search PubMed papers
 papers = client.search_papers("biotin hair loss")
 print(f"{len(papers)} papers found")
+```
+
+## Command-Line Interface
+
+Install with the `cli` extra for terminal access:
+
+```bash
+pip install citedhealth[cli]
+```
+
+### Search ingredients
+
+```bash
+citedhealth ingredients biotin
+```
+
+### Get evidence grade for an ingredient-condition pair
+
+```bash
+citedhealth evidence biotin hair-loss
+```
+
+### Look up a single ingredient
+
+```bash
+citedhealth ingredient biotin
+```
+
+### Search PubMed papers
+
+```bash
+citedhealth papers --year 2024
+```
+
+### Get a paper by PubMed ID
+
+```bash
+citedhealth paper 12345678
+```
+
+All commands support `--json` for machine-readable output:
+
+```bash
+citedhealth ingredients biotin --json
 ```
 
 ## What You Can Do
