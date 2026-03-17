@@ -42,7 +42,7 @@ ingredients = client.search_ingredients("biotin")
 print(ingredients[0].name)  # "Biotin"
 
 # Get evidence grade
-evidence = client.get_evidence("biotin", "hair-loss")
+evidence = client.get_evidence("biotin", "nutritional-deficiency-hair-loss")
 print(f"Grade: {evidence.grade} — {evidence.grade_label}")
 # Grade: A — Strong Evidence
 
@@ -68,7 +68,7 @@ citedhealth ingredients biotin
 ### Get evidence grade for an ingredient-condition pair
 
 ```bash
-citedhealth evidence biotin hair-loss
+citedhealth evidence biotin nutritional-deficiency-hair-loss
 ```
 
 ### Look up a single ingredient
