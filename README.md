@@ -15,6 +15,7 @@ Python client for the [CITED Health](https://citedhealth.com) evidence-based sup
 - [What You Can Do](#what-you-can-do)
 - [Evidence Grades](#evidence-grades)
 - [API Reference](#api-reference)
+- [Learn More About Evidence-Based Supplements](#learn-more-about-evidence-based-supplements)
 - [Also Available](#also-available)
 - [License](#license)
 
@@ -80,12 +81,22 @@ Access 2,881 indexed papers with citation data from Semantic Scholar.
 
 Full API documentation: [citedhealth.com/developers/](https://citedhealth.com/developers/)
 
+## Learn More About Evidence-Based Supplements
+
+- **Tools**: [Evidence Checker](https://citedhealth.com/evidence/) · [Ingredient Browser](https://citedhealth.com/) · [Paper Search](https://citedhealth.com/papers/)
+- **Browse**: [Hair Health](https://haircited.com) · [Sleep Health](https://sleepcited.com) · [All Ingredients](https://citedhealth.com/api/ingredients/)
+- **Guides**: [Grading Methodology](https://citedhealth.com/editorial-policy/) · [Medical Disclaimer](https://citedhealth.com/medical-disclaimer/)
+- **API**: [REST API Docs](https://citedhealth.com/developers/) · [OpenAPI Spec](https://citedhealth.com/api/openapi.json)
+
 ## Also Available
 
-| Platform | Package | Install |
-|----------|---------|---------|
-| **npm** | `citedhealth` | `npm install citedhealth` |
-| **MCP** | `citedhealth-mcp` | `uvx citedhealth-mcp` |
+| Platform | Install | Link |
+|----------|---------|------|
+| **npm** | `npm install citedhealth` | [npm](https://www.npmjs.com/package/citedhealth) |
+| **Go** | `go get github.com/citedhealth/citedhealth-go` | [pkg.go.dev](https://pkg.go.dev/github.com/citedhealth/citedhealth-go) |
+| **Rust** | `cargo add citedhealth` | [crates.io](https://crates.io/crates/citedhealth) |
+| **Ruby** | `gem install citedhealth` | [RubyGems](https://rubygems.org/gems/citedhealth) |
+| **MCP** | `uvx citedhealth-mcp` | [PyPI](https://pypi.org/project/citedhealth-mcp/) |
 
 ## License
 
