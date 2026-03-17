@@ -13,7 +13,7 @@ from citedhealth.models import (
     Paper,
 )
 
-_DEFAULT_BASE_URL = "https://citedhealth.com"
+_DEFAULT_BASE_URL = "https://haircited.com"
 _DEFAULT_TIMEOUT = 30.0
 
 
