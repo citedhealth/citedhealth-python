@@ -1,15 +1,16 @@
 # citedhealth
 
-[![PyPI](https://img.shields.io/pypi/v/citedhealth)](https://pypi.org/project/citedhealth/)
+[![PyPI version](https://agentgif.com/badge/pypi/citedhealth/version.svg)](https://pypi.org/project/citedhealth/)
 [![Python](https://img.shields.io/pypi/pyversions/citedhealth)](https://pypi.org/project/citedhealth/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://agentgif.com/badge/github/citedhealth/citedhealth-python/stars.svg)](https://github.com/citedhealth/citedhealth-python)
 
 Python client for the [CITED Health](https://citedhealth.com) evidence-based supplement API. Query 74 ingredients, 30 conditions, 152 evidence links, and 2,881 PubMed papers — every health claim backed by peer-reviewed research.
 
 > **Try it live at [citedhealth.com](https://citedhealth.com)** — evidence grades for supplements like Biotin, Melatonin, and Ashwagandha.
 
 <p align="center">
-  <img src="demo.gif" alt="citedhealth CLI demo — search supplement ingredients, evidence grades, and PubMed papers" width="800">
+  <a href="https://agentgif.com/T9MeMry2"><img src="https://media.agentgif.com/T9MeMry2.gif" alt="citedhealth Python CLI demo — search supplement ingredients, evidence grades, and PubMed papers" width="800"></a>
 </p>
 
 ## Table of Contents
