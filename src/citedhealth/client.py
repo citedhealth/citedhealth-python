@@ -8,7 +8,10 @@ import httpx
 
 from citedhealth.exceptions import CitedHealthError, NotFoundError, RateLimitError
 from citedhealth.models import (
+    Condition,
     EvidenceLink,
+    GlossaryTerm,
+    Guide,
     Ingredient,
     Paper,
 )
@@ -92,6 +95,45 @@ class CitedHealth:
         data = self._request(f"/api/papers/{pmid}/")
         return Paper.from_dict(data)
 
+    def list_conditions(self, is_featured: bool | None = None) -> list[Condition]:
+        """List health conditions, optionally filtered by featured status."""
+        params: dict[str, str] = {}
+        if is_featured is not None:
+            params["is_featured"] = str(is_featured).lower()
+        data = self._request("/api/conditions/", params=params)
+        return [Condition.from_dict(item) for item in data.get("results", [])]
+
+    def get_condition(self, slug: str) -> Condition:
+        """Get a single condition by slug."""
+        data = self._request(f"/api/conditions/{slug}/")
+        return Condition.from_dict(data)
+
+    def list_glossary(self, category: str | None = None) -> list[GlossaryTerm]:
+        """List glossary terms, optionally filtered by category."""
+        params: dict[str, str] = {}
+        if category:
+            params["category"] = category
+        data = self._request("/api/glossary/", params=params)
+        return [GlossaryTerm.from_dict(item) for item in data.get("results", [])]
+
+    def get_glossary_term(self, slug: str) -> GlossaryTerm:
+        """Get a single glossary term by slug."""
+        data = self._request(f"/api/glossary/{slug}/")
+        return GlossaryTerm.from_dict(data)
+
+    def list_guides(self, category: str | None = None) -> list[Guide]:
+        """List health guides, optionally filtered by category."""
+        params: dict[str, str] = {}
+        if category:
+            params["category"] = category
+        data = self._request("/api/guides/", params=params)
+        return [Guide.from_dict(item) for item in data.get("results", [])]
+
+    def get_guide(self, slug: str) -> Guide:
+        """Get a single guide by slug."""
+        data = self._request(f"/api/guides/{slug}/")
+        return Guide.from_dict(data)
+
 
 class AsyncCitedHealth:
     """Asynchronous client for the CITED Health API.
@@ -174,3 +216,36 @@ class AsyncCitedHealth:
     async def get_paper(self, pmid: str) -> Paper:
         data = await self._request(f"/api/papers/{pmid}/")
         return Paper.from_dict(data)
+
+    async def list_conditions(self, is_featured: bool | None = None) -> list[Condition]:
+        params: dict[str, str] = {}
+        if is_featured is not None:
+            params["is_featured"] = str(is_featured).lower()
+        data = await self._request("/api/conditions/", params=params)
+        return [Condition.from_dict(item) for item in data.get("results", [])]
+
+    async def get_condition(self, slug: str) -> Condition:
+        data = await self._request(f"/api/conditions/{slug}/")
+        return Condition.from_dict(data)
+
+    async def list_glossary(self, category: str | None = None) -> list[GlossaryTerm]:
+        params: dict[str, str] = {}
+        if category:
+            params["category"] = category
+        data = await self._request("/api/glossary/", params=params)
+        return [GlossaryTerm.from_dict(item) for item in data.get("results", [])]
+
+    async def get_glossary_term(self, slug: str) -> GlossaryTerm:
+        data = await self._request(f"/api/glossary/{slug}/")
+        return GlossaryTerm.from_dict(data)
+
+    async def list_guides(self, category: str | None = None) -> list[Guide]:
+        params: dict[str, str] = {}
+        if category:
+            params["category"] = category
+        data = await self._request("/api/guides/", params=params)
+        return [Guide.from_dict(item) for item in data.get("results", [])]
+
+    async def get_guide(self, slug: str) -> Guide:
+        data = await self._request(f"/api/guides/{slug}/")
+        return Guide.from_dict(data)

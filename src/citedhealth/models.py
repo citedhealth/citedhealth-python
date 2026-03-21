@@ -41,14 +41,73 @@ class Ingredient:
 
 @dataclass(frozen=True)
 class Condition:
-    """A health condition (nested in EvidenceLink)."""
+    """A health condition."""
 
     slug: str
     name: str
+    description: str = ""
+    meta_description: str = ""
+    prevalence: str = ""
+    symptoms: list[str] = field(default_factory=list)
+    risk_factors: list[str] = field(default_factory=list)
+    is_featured: bool = False
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Condition:
-        return cls(slug=data.get("slug", ""), name=data.get("name", ""))
+        return cls(
+            slug=data.get("slug", ""),
+            name=data.get("name", ""),
+            description=data.get("description", ""),
+            meta_description=data.get("meta_description", ""),
+            prevalence=data.get("prevalence", ""),
+            symptoms=data.get("symptoms", []),
+            risk_factors=data.get("risk_factors", []),
+            is_featured=data.get("is_featured", False),
+        )
+
+
+@dataclass(frozen=True)
+class GlossaryTerm:
+    """A glossary term definition."""
+
+    slug: str
+    term: str
+    short_definition: str = ""
+    definition: str = ""
+    abbreviation: str = ""
+    category: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> GlossaryTerm:
+        return cls(
+            slug=data.get("slug", ""),
+            term=data.get("term", ""),
+            short_definition=data.get("short_definition", ""),
+            definition=data.get("definition", ""),
+            abbreviation=data.get("abbreviation", ""),
+            category=data.get("category", ""),
+        )
+
+
+@dataclass(frozen=True)
+class Guide:
+    """A health guide article."""
+
+    slug: str
+    title: str
+    content: str = ""
+    category: str = ""
+    meta_description: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> Guide:
+        return cls(
+            slug=data.get("slug", ""),
+            title=data.get("title", ""),
+            content=data.get("content", ""),
+            category=data.get("category", ""),
+            meta_description=data.get("meta_description", ""),
+        )
 
 
 @dataclass(frozen=True)

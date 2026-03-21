@@ -223,5 +223,136 @@ def paper(
     console.print(table)
 
 
+@app.command()
+def conditions(
+    as_json: Annotated[bool, typer.Option("--json", help="Output as compact JSON")] = False,
+    featured: Annotated[bool | None, typer.Option("--featured/--all", help="Filter featured conditions only")] = None,
+) -> None:
+    """List health conditions."""
+    client = CitedHealth()
+    results = client.list_conditions(is_featured=featured)
+
+    if as_json:
+        print(json.dumps([dataclasses.asdict(r) for r in results]))  # noqa: T201
+        return
+
+    if not results:
+        console.print("[yellow]No conditions found.[/yellow]")
+        return
+
+    table = Table(title="Conditions")
+    table.add_column("Name", style="cyan")
+    table.add_column("Slug")
+    table.add_column("Prevalence")
+    table.add_column("Featured", justify="center")
+
+    for item in results:
+        table.add_row(
+            item.name,
+            item.slug,
+            item.prevalence or "[dim]—[/dim]",
+            "Y" if item.is_featured else "",
+        )
+
+    console.print(table)
+    console.print(f"[dim]{len(results)} result(s)[/dim]")
+
+
+@app.command()
+def condition(
+    slug: Annotated[str, typer.Argument(help="Condition slug (e.g. 'hair-loss')")],
+    as_json: Annotated[bool, typer.Option("--json", help="Output as compact JSON")] = False,
+) -> None:
+    """Get a single condition by slug."""
+    client = CitedHealth()
+    item = client.get_condition(slug)
+
+    if as_json:
+        print(json.dumps(dataclasses.asdict(item)))  # noqa: T201
+        return
+
+    table = Table(title=f"Condition: {item.name}")
+    table.add_column("Property", style="cyan")
+    table.add_column("Value")
+
+    table.add_row("Name", item.name)
+    table.add_row("Slug", item.slug)
+    table.add_row("Description", item.description or "[dim]—[/dim]")
+    table.add_row("Prevalence", item.prevalence or "[dim]—[/dim]")
+    table.add_row("Symptoms", ", ".join(item.symptoms) if item.symptoms else "[dim]—[/dim]")
+    table.add_row("Risk Factors", ", ".join(item.risk_factors) if item.risk_factors else "[dim]—[/dim]")
+    table.add_row("Featured", "Yes" if item.is_featured else "No")
+
+    console.print(table)
+
+
+@app.command()
+def glossary(
+    category: Annotated[str | None, typer.Option("--category", "-c", help="Filter by category")] = None,
+    as_json: Annotated[bool, typer.Option("--json", help="Output as compact JSON")] = False,
+) -> None:
+    """List glossary terms."""
+    client = CitedHealth()
+    results = client.list_glossary(category=category)
+
+    if as_json:
+        print(json.dumps([dataclasses.asdict(r) for r in results]))  # noqa: T201
+        return
+
+    if not results:
+        console.print("[yellow]No glossary terms found.[/yellow]")
+        return
+
+    table = Table(title="Glossary")
+    table.add_column("Term", style="cyan")
+    table.add_column("Slug")
+    table.add_column("Category")
+    table.add_column("Abbreviation")
+
+    for item in results:
+        table.add_row(
+            item.term,
+            item.slug,
+            item.category or "[dim]—[/dim]",
+            item.abbreviation or "[dim]—[/dim]",
+        )
+
+    console.print(table)
+    console.print(f"[dim]{len(results)} result(s)[/dim]")
+
+
+@app.command()
+def guides(
+    category: Annotated[str | None, typer.Option("--category", "-c", help="Filter by category")] = None,
+    as_json: Annotated[bool, typer.Option("--json", help="Output as compact JSON")] = False,
+) -> None:
+    """List health guides."""
+    client = CitedHealth()
+    results = client.list_guides(category=category)
+
+    if as_json:
+        print(json.dumps([dataclasses.asdict(r) for r in results]))  # noqa: T201
+        return
+
+    if not results:
+        console.print("[yellow]No guides found.[/yellow]")
+        return
+
+    table = Table(title="Guides")
+    table.add_column("Title", style="cyan", max_width=60)
+    table.add_column("Slug")
+    table.add_column("Category")
+
+    for item in results:
+        table.add_row(
+            item.title[:60],
+            item.slug,
+            item.category or "[dim]—[/dim]",
+        )
+
+    console.print(table)
+    console.print(f"[dim]{len(results)} result(s)[/dim]")
+
+
 if __name__ == "__main__":
     app()

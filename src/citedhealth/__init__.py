@@ -14,13 +14,15 @@ from citedhealth.exceptions import CitedHealthError, NotFoundError, RateLimitErr
 from citedhealth.models import (
     Condition,
     EvidenceLink,
+    GlossaryTerm,
+    Guide,
     Ingredient,
     NestedIngredient,
     PaginatedResponse,
     Paper,
 )
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 __all__ = [
     "AsyncCitedHealth",
@@ -28,6 +30,8 @@ __all__ = [
     "CitedHealthError",
     "Condition",
     "EvidenceLink",
+    "GlossaryTerm",
+    "Guide",
     "Ingredient",
     "NestedIngredient",
     "NotFoundError",
